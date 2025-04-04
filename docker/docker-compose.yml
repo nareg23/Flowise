@@ -50,11 +50,12 @@ services:
             - REDIS_KEY=${REDIS_KEY}
             - REDIS_CA=${REDIS_CA}
         healthcheck:
-            test: ['CMD', 'curl', '-f', 'http://localhost:${PORT}/api/v1/ping']
+            test: ["CMD-SHELL", "wget --spider -q http://localhost:4003/api/v1/ping || exit 1"]
             interval: 10s
             timeout: 5s
-            retries: 5
-            start_period: 30s
+            retries: 10
+            start_period: 45s
+
         volumes:
             - ~/.flowise:/root/.flowise
         entrypoint: /bin/sh -c "sleep 3; flowise start"
